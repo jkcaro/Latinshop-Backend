@@ -35,9 +35,15 @@ router.get('/usuarios', async (req, res) => {
       SELECT u.id, u.nombre, u.apellidos, u.email, u.telefono,
              u.activo, u.email_verificado, u.fecha_creacion,
              u.foto_perfil AS fotoPerfil,
-             r.nombre AS rol
+             r.nombre AS rol,
+             c.id AS clienteId,
+             c.direccion,
+             c.ciudad_id AS ciudadId,
+             ci.nombre AS ciudadNombre
       FROM usuarios u
       JOIN roles r ON u.rol_id = r.id
+      LEFT JOIN clientes c ON c.usuario_id = u.id
+      LEFT JOIN ciudades ci ON ci.id = c.ciudad_id
       ORDER BY u.fecha_creacion DESC
     `);
     res.json(rows);
